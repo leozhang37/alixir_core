@@ -27,7 +27,7 @@ defmodule AlixirCore.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:httpoison, "~> 1.2.0"},
+      {:httpoison, "~> 1.5.0"},
       {:timex, "~> 3.3"},
       {:elixir_uuid, "~> 1.2"},
 
