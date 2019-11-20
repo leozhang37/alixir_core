@@ -1,4 +1,5 @@
 defmodule Alixir.Request do
+	require Logger
   defstruct [
     :http_method,
     :url,
@@ -26,12 +27,14 @@ defmodule Alixir.Request do
   end
 
   defp do_perfom(method, url, body \\ "", headers \\ [], options \\ []) do
-    case HTTPoison.request(method, url, body, headers, options) do
+    case HTTPoison.request(method, url, body, headers, Keyword.merge(options, [recv_timeout: 100_000])) do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
         {:ok, 200, body}
       {:ok, %HTTPoison.Response{body: body, status_code: status_code}} ->
+		  Logger.error("[Alixir] do perfom error: #{inspect(status_code)}")
         {:error, status_code, body}
       {:error, %HTTPoison.Error{reason: reason}} ->
+		  Logger.error("[Alixir] do perfom error: #{inspect(reason)}")
         {:error, reason}
     end
   end
